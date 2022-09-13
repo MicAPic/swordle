@@ -18,6 +18,8 @@ public class BattleManager : MonoBehaviour
                        "ROBIN v ALERT: " + WordleComparison("ROBIN".ToCharArray(), "ALERT".ToCharArray()) + "\n" +
                        "ROBIN v SONIC: " + WordleComparison("ROBIN".ToCharArray(), "SONIC".ToCharArray()) + "\n" +
                        "ROBIN v ROBIN: " + WordleComparison("ROBIN".ToCharArray(), "ROBIN".ToCharArray()) + "\n";
+        
+        Destroy(GameObject.Find("Caret"));
     }
 
     // // Update is called once per frame
