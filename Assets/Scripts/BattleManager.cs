@@ -1,53 +1,158 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using LemmaSharp.Classes;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using WordDictionary = NetSpell.SpellChecker.Dictionary.WordDictionary;
 
 public class BattleManager : MonoBehaviour
 {
+    [Header("Wordle")]
     [SerializeField]
-    private TMP_Text console;
+    private string answer = "sword";
+    [SerializeField] 
+    private List<string> guesses = new List<string>();
+    private List<string> _guessesColour = new List<string>();
+    private int _currentGuessIndex = 0;
+    private readonly WordDictionary _enDictionary = new WordDictionary();
+    private readonly Lemmatizer _lemmatizer = 
+        new Lemmatizer(System.IO.File.OpenRead("Assets/Plugins/full7z-multext-en.lem"));
+
+    [Header("UI")] 
+    [SerializeField] 
+    private TMP_InputField inputField;
+    private TMP_Text inputPlaceholderText;
+    [SerializeField] 
+    private GameObject scrollArrowUp;
+    [SerializeField] 
+    private GameObject scrollArrowDown;
+    private bool _canScroll = true;
     
     // Start is called before the first frame update
     void Start()
     {
-        console.text = "ALLOW v LOLLY: " + WordleComparison("ALLOW".ToCharArray(), "LOLLY".ToCharArray()) + "\n" +
-                       "BULLY v LOLLY: " + WordleComparison("BULLY".ToCharArray(), "LOLLY".ToCharArray()) + "\n" +
-                       "ROBIN v ALERT: " + WordleComparison("ROBIN".ToCharArray(), "ALERT".ToCharArray()) + "\n" +
-                       "ROBIN v SONIC: " + WordleComparison("ROBIN".ToCharArray(), "SONIC".ToCharArray()) + "\n" +
-                       "ROBIN v ROBIN: " + WordleComparison("ROBIN".ToCharArray(), "ROBIN".ToCharArray()) + "\n";
+        // initialize input field
+        inputField.ActivateInputField();
+        Destroy(inputField.transform.Find("Text Area/Caret").gameObject);
         
-        Destroy(GameObject.Find("Caret"));
+        // initialize en-US dictionary
+        _enDictionary.DictionaryFile = "Assets/Plugins/en-US.dic"; 
+        _enDictionary.Initialize();
+
+        inputPlaceholderText = inputField.placeholder.GetComponent<TMP_Text>();
     }
 
-    // // Update is called once per frame
-    // void Update()
-    // {
-    //     
-    // }
+    // Update is called once per frame
+    void Update()
+    {
+        if (!_canScroll)
+        {
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            ScrollThroughGuesses(-1);
+        }
 
-    private string WordleComparison(char[] answer, char[] guess)
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            ScrollThroughGuesses(1);
+        }
+    }
+
+    public void SubmitGuess(string guess)
+    {
+        inputField.ActivateInputField(); // retain focus
+
+        guess = _lemmatizer.Lemmatize(guess).ToLower();
+        Debug.Log(guess);
+        if (guess.Length == answer.Length && _enDictionary.Contains(guess) && !guesses.Contains(guess))
+        {
+            var colouredGuess = WordleComparison(guess.ToCharArray());
+            inputField.text = "";
+            inputPlaceholderText.text = colouredGuess;
+            if (guess == answer)
+            {
+                _canScroll = false;
+                inputField.interactable = false;
+                return;
+            }
+            guesses.Add(guess);
+            _guessesColour.Add(colouredGuess);
+            scrollArrowDown.gameObject.SetActive(true);
+        }
+    }
+
+    public void ActivateInput(string _)
+    {
+        inputPlaceholderText.text = "";
+        
+        if (guesses.Count != 0) // this is to prevent bugs
+        {
+            scrollArrowUp.gameObject.SetActive(true);
+            scrollArrowDown.gameObject.SetActive(false);
+        }
+        _currentGuessIndex = guesses.Count;
+    }
+    
+    public void ScrollThroughGuesses(int scrollModifier)
+    {
+
+        string activeGuess = "";
+        try
+        {
+            activeGuess = _guessesColour[_currentGuessIndex + scrollModifier];
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            if (scrollModifier > 0)
+            {
+                // switch to input
+                scrollArrowDown.gameObject.SetActive(false);
+                inputField.text = "";
+                ActivateInput("");
+            }
+            return;
+        }
+
+        _currentGuessIndex += scrollModifier;
+        inputField.text = "";
+        inputPlaceholderText.text = activeGuess;
+        
+        {
+            scrollArrowUp.gameObject.SetActive(true);
+            scrollArrowDown.gameObject.SetActive(true);
+        }
+        
+        if (_currentGuessIndex == 0)
+        {
+            scrollArrowUp.gameObject.SetActive(false);
+        }
+    }
+    
+    private string WordleComparison(char[] guess)
     {
         // based on https://rosettacode.org/wiki/Wordle_comparison
         var result = guess.Select(c => c.ToString()).ToArray(); // default colour
+        var answerTempArray = answer.ToCharArray();
 
         for (var i = 0; i < guess.Length; i++)
         {
-            if (guess[i] == answer[i])
+            if (guess[i] == answerTempArray[i])
             {
-                answer[i] = '\v';
+                answerTempArray[i] = '\v';
                 result[i] = "<color=#52b25f>" + guess[i] + "</color>"; // green
             }
         }
         
         for (var i = 0; i < guess.Length; i++)
         {
-            var occurenceIndex = Array.IndexOf(answer, guess[i]);
+            var occurenceIndex = Array.IndexOf(answerTempArray, guess[i]);
             if (occurenceIndex >= 0)
             {
-                answer[occurenceIndex] = '\v';
+                answerTempArray[occurenceIndex] = '\v';
                 result[i] = "<color=#ccb944>" + guess[i] + "</color>"; // yellow
             }
         }
