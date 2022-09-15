@@ -4,7 +4,6 @@ using System.Linq;
 using LemmaSharp.Classes;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using WordDictionary = NetSpell.SpellChecker.Dictionary.WordDictionary;
 
 public class BattleManager : MonoBehaviour
@@ -15,7 +14,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] 
     private List<string> guesses = new List<string>();
     private List<string> _guessesColour = new List<string>();
-    private int _currentGuessIndex = 0;
+    public int _currentGuessIndex = 0;
     private readonly WordDictionary _enDictionary = new WordDictionary();
     private readonly Lemmatizer _lemmatizer = 
         new Lemmatizer(System.IO.File.OpenRead("Assets/Plugins/full7z-multext-en.lem"));
@@ -51,6 +50,7 @@ public class BattleManager : MonoBehaviour
         {
             return;
         }
+        
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             ScrollThroughGuesses(-1);
@@ -117,8 +117,8 @@ public class BattleManager : MonoBehaviour
             return;
         }
 
-        _currentGuessIndex += scrollModifier;
         inputField.text = "";
+        _currentGuessIndex += scrollModifier;
         inputPlaceholderText.text = activeGuess;
         
         {

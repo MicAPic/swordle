@@ -73,3 +73,6 @@ crashlytics-build.properties
 
 # Screenshot folder
 /Screenshots
+
+# macOS cache
+.DS_Store
