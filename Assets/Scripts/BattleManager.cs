@@ -8,6 +8,10 @@ using WordDictionary = NetSpell.SpellChecker.Dictionary.WordDictionary;
 
 public class BattleManager : MonoBehaviour
 {
+    [Header("Animation & Sound")] 
+    [SerializeField]
+    private Animator playerAnimator;
+    
     [Header("Wordle")]
     [SerializeField]
     private string answer = "sword";
@@ -33,7 +37,7 @@ public class BattleManager : MonoBehaviour
     void Start()
     {
         // initialize input field
-        inputField.ActivateInputField();
+        FocusOnInput();
         Destroy(inputField.transform.Find("Text Area/Caret").gameObject);
         
         // initialize en-US dictionary
@@ -77,15 +81,17 @@ public class BattleManager : MonoBehaviour
             {
                 _canScroll = false;
                 inputField.interactable = false;
+                playerAnimator.SetTrigger("Attacks");
                 return;
             }
             guesses.Add(guess);
             _guessesColour.Add(colouredGuess);
             scrollArrowDown.gameObject.SetActive(true);
+            playerAnimator.SetTrigger("Damaged");
         }
     }
 
-    public void ActivateInput(string _)
+    public void ActivateInput(string _="")
     {
         inputPlaceholderText.text = "";
         
@@ -95,6 +101,11 @@ public class BattleManager : MonoBehaviour
             scrollArrowDown.gameObject.SetActive(false);
         }
         _currentGuessIndex = guesses.Count;
+    }
+
+    public void FocusOnInput(string _="")
+    {
+        inputField.ActivateInputField();
     }
     
     public void ScrollThroughGuesses(int scrollModifier)
@@ -112,7 +123,7 @@ public class BattleManager : MonoBehaviour
                 // switch to input
                 scrollArrowDown.gameObject.SetActive(false);
                 inputField.text = "";
-                ActivateInput("");
+                ActivateInput();
             }
             return;
         }

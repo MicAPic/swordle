@@ -13,11 +13,11 @@ namespace Utility
 
         void Awake()
         {
-            if (_instance != null)
-            {
-                Destroy(gameObject);
-                return;
-            }
+            // if (_instance != null)
+            // {
+            //     Destroy(gameObject);
+            //     return;
+            // }
 
             _instance = this;
             DontDestroyOnLoad(gameObject);
@@ -33,7 +33,7 @@ namespace Utility
 
         // constants used in Pixelize.shader:
         private float _minPixelSize = 0.0001f;
-        private float _maxPixelSize = 0.15f;
+        private float _maxPixelSize = 0.13f;
         private float _transitionStep = 0.002f;
         private string _pixelSize = "_PixelSize";
 
@@ -46,7 +46,7 @@ namespace Utility
             while (size < _maxPixelSize)
             {
                 size += _transitionStep;
-                // Debug.Log(size);
+                Debug.Log(size);
                 transitionMaterial.SetFloat(_pixelSize, size);
                 yield return null;
             }
@@ -57,12 +57,13 @@ namespace Utility
             while (size > _minPixelSize)
             {
                 size -= _transitionStep;
-                // Debug.Log(size);
+                Debug.Log(size);
                 transitionMaterial.SetFloat(_pixelSize, size);
                 yield return null;
             }
             
             _transitionStarted = false;
+            Destroy(gameObject);
         }
     }
 }
