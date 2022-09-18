@@ -25,6 +25,6 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _FadeScale: 10
-    - _PixelSize: 0.00009999471
+    - _PixelSize: 0.0001
     m_Colors: []
   m_BuildTextureStacks: []

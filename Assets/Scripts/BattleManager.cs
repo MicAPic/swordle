@@ -11,6 +11,7 @@ public class BattleManager : MonoBehaviour
     [Header("Animation & Sound")] 
     [SerializeField]
     private Animator playerAnimator;
+    public Animator enemyAnimator;
     
     [Header("Wordle")]
     [SerializeField]
@@ -88,6 +89,7 @@ public class BattleManager : MonoBehaviour
             _guessesColour.Add(colouredGuess);
             scrollArrowDown.gameObject.SetActive(true);
             playerAnimator.SetTrigger("Damaged");
+            // playerAnimator.SetBool("IsDead", true);
         }
     }
 

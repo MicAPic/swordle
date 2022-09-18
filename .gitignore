@@ -76,3 +76,5 @@ crashlytics-build.properties
 
 # macOS cache
 .DS_Store
+.idea/.idea.Swordle/.idea/projectSettingsUpdater.xml
+.idea/.idea.Swordle/.idea/workspace.xml

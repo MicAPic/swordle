@@ -7,7 +7,7 @@ namespace Utility
 {
     public class TransitionController : MonoBehaviour
     {
-        private static TransitionController _instance;
+        // private static TransitionController _instance;
         public Material transitionMaterial;
         private bool _transitionStarted;
 
@@ -19,7 +19,7 @@ namespace Utility
             //     return;
             // }
 
-            _instance = this;
+            // _instance = this;
             DontDestroyOnLoad(gameObject);
         }
 
