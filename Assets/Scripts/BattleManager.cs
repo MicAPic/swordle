@@ -15,6 +15,9 @@ public class BattleManager : MonoBehaviour
     private Animator playerAnimator;
     public Animator enemyAnimator;
     
+    [Header("SFX/VFX")]
+    public Effect victorySfx;
+    
     [Header("Wordle")]
     [SerializeField]
     private string answer;
@@ -141,7 +144,7 @@ public class BattleManager : MonoBehaviour
     public void ScrollThroughGuesses(int scrollModifier)
     {
 
-        string activeGuess = "";
+        var activeGuess = "";
         try
         {
             activeGuess = _guessesColour[_currentGuessIndex + scrollModifier];

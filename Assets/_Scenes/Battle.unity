@@ -1028,6 +1028,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerAnimator: {fileID: 625957995}
   enemyAnimator: {fileID: 1953786470}
+  victorySfx: {fileID: 7029785192855684400, guid: e53f90f5b6cfc4c6390409305ccb423c, type: 3}
   answer: 
   guesses: []
   _currentGuessIndex: 0
@@ -1165,7 +1166,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9a4157d418a5494e8a355807b45ef2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _battleManager: {fileID: 593502644}
+  battleManager: {fileID: 593502644}
+  transitionController: {fileID: 1798033478}
 --- !u!1 &628470546
 GameObject:
   m_ObjectHideFlags: 0
@@ -2752,7 +2754,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -5725948026963182280, guid: 30a2b3a2a8fb4ba4a9d67862de2f8cd8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0.000019490495
+      value: 0.000018669345
       objectReference: {fileID: 0}
     - target: {fileID: -4871536851314367657, guid: 30a2b3a2a8fb4ba4a9d67862de2f8cd8, type: 3}
       propertyPath: m_Layer
@@ -2768,23 +2770,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -2352476703186734458, guid: 30a2b3a2a8fb4ba4a9d67862de2f8cd8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -0.000007929347
+      value: -0.000009351605
       objectReference: {fileID: 0}
     - target: {fileID: -2352476703186734458, guid: 30a2b3a2a8fb4ba4a9d67862de2f8cd8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -0.000013275534
+      value: -0.0000136603785
       objectReference: {fileID: 0}
     - target: {fileID: -2352476703186734458, guid: 30a2b3a2a8fb4ba4a9d67862de2f8cd8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0.000000006989356
+      value: 0.0000000056330918
       objectReference: {fileID: 0}
     - target: {fileID: -913088813250679669, guid: 30a2b3a2a8fb4ba4a9d67862de2f8cd8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 89.9802
+      value: 89.98021
       objectReference: {fileID: 0}
     - target: {fileID: -913088813250679669, guid: 30a2b3a2a8fb4ba4a9d67862de2f8cd8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0.000024318193
+      value: 0.000022311813
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 30a2b3a2a8fb4ba4a9d67862de2f8cd8, type: 3}
       propertyPath: m_Name
@@ -2796,7 +2798,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2655208916124921550, guid: 30a2b3a2a8fb4ba4a9d67862de2f8cd8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0.000007649421
+      value: 0.000009334667
       objectReference: {fileID: 0}
     - target: {fileID: 2788943867344286557, guid: 30a2b3a2a8fb4ba4a9d67862de2f8cd8, type: 3}
       propertyPath: m_CastShadows
@@ -2828,7 +2830,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3611007001155678094, guid: 30a2b3a2a8fb4ba4a9d67862de2f8cd8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -0.000034434022
+      value: -0.000035966557
       objectReference: {fileID: 0}
     - target: {fileID: 3611007001155678094, guid: 30a2b3a2a8fb4ba4a9d67862de2f8cd8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -2840,15 +2842,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4412248749683132824, guid: 30a2b3a2a8fb4ba4a9d67862de2f8cd8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -48.183655
+      value: -50.135487
       objectReference: {fileID: 0}
     - target: {fileID: 4412248749683132824, guid: 30a2b3a2a8fb4ba4a9d67862de2f8cd8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 21.514423
+      value: 12.890614
       objectReference: {fileID: 0}
     - target: {fileID: 4412248749683132824, guid: 30a2b3a2a8fb4ba4a9d67862de2f8cd8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -30.2249
+      value: -16.606644
       objectReference: {fileID: 0}
     - target: {fileID: 5518661795687464762, guid: 30a2b3a2a8fb4ba4a9d67862de2f8cd8, type: 3}
       propertyPath: m_Layer
