@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using LemmaSharp.Classes;
 using TMPro;
 using UnityEngine;
+using Random = UnityEngine.Random;
 using WordDictionary = NetSpell.SpellChecker.Dictionary.WordDictionary;
 
 public class BattleManager : MonoBehaviour
@@ -15,24 +17,36 @@ public class BattleManager : MonoBehaviour
     
     [Header("Wordle")]
     [SerializeField]
-    private string answer = "sword";
+    private string answer;
+    public const int Tries = 6;
     [SerializeField] 
     private List<string> guesses = new List<string>();
     private List<string> _guessesColour = new List<string>();
     public int _currentGuessIndex = 0;
     private readonly WordDictionary _enDictionary = new WordDictionary();
     private readonly Lemmatizer _lemmatizer = 
-        new Lemmatizer(System.IO.File.OpenRead("Assets/Plugins/full7z-multext-en.lem"));
+        new Lemmatizer(File.OpenRead("Assets/Plugins/full7z-multext-en.lem"));
 
     [Header("UI")] 
     [SerializeField] 
     private TMP_InputField inputField;
     private TMP_Text inputPlaceholderText;
     [SerializeField] 
+    private GameObject heartContainer;
+    [SerializeField] 
+    private GameObject heartSpritePrefab;
+    [SerializeField] 
     private GameObject scrollArrowUp;
     [SerializeField] 
     private GameObject scrollArrowDown;
     private bool _canScroll = true;
+
+    void Awake()
+    {
+        // generate answer
+        var words = File.ReadAllLines("Assets/corpus.txt");
+        answer = words[Random.Range(0, words.Length)];
+    }
     
     // Start is called before the first frame update
     void Start()
@@ -44,7 +58,13 @@ public class BattleManager : MonoBehaviour
         // initialize en-US dictionary
         _enDictionary.DictionaryFile = "Assets/Plugins/en-US.dic"; 
         _enDictionary.Initialize();
-
+        
+        // initialize the life bar
+        for (int i = 0; i < Tries; i++)
+        {
+            Instantiate(heartSpritePrefab, heartContainer.transform);
+        } 
+        
         inputPlaceholderText = inputField.placeholder.GetComponent<TMP_Text>();
     }
 
@@ -80,16 +100,24 @@ public class BattleManager : MonoBehaviour
             inputPlaceholderText.text = colouredGuess;
             if (guess == answer)
             {
-                _canScroll = false;
-                inputField.interactable = false;
+                LockInput();
                 playerAnimator.SetTrigger("Attacks");
                 return;
             }
+            
             guesses.Add(guess);
             _guessesColour.Add(colouredGuess);
-            scrollArrowDown.gameObject.SetActive(true);
             playerAnimator.SetTrigger("Damaged");
-            // playerAnimator.SetBool("IsDead", true);
+            Destroy(heartContainer.transform.GetChild(0).gameObject);
+            
+            if (guesses.Count == Tries)
+            {
+                LockInput();
+                playerAnimator.SetBool("IsDead", true);
+                return;
+            }
+            
+            scrollArrowDown.gameObject.SetActive(true);
         }
     }
 
@@ -171,5 +199,11 @@ public class BattleManager : MonoBehaviour
         }
         
         return string.Concat(result);
+    }
+
+    private void LockInput()
+    {
+        _canScroll = false;
+        inputField.interactable = false;
     }
 }
