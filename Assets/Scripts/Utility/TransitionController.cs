@@ -7,19 +7,14 @@ namespace Utility
 {
     public class TransitionController : MonoBehaviour
     {
-        // private static TransitionController _instance;
         public Material transitionMaterial;
         private bool _transitionStarted;
+        private AudioSource _audioSource;
 
         void Awake()
         {
-            // if (_instance != null)
-            // {
-            //     Destroy(gameObject);
-            //     return;
-            // }
-
-            // _instance = this;
+            _audioSource = FindObjectOfType<AudioSource>();
+            StartCoroutine(AudioFade(1, 1));
             DontDestroyOnLoad(gameObject);
         }
 
@@ -40,30 +35,43 @@ namespace Utility
         IEnumerator SceneTransition(string sceneName)
         {
             _transitionStarted = true;
+            StartCoroutine(AudioFade(0.6f, 0));
             yield return null;
 
             var size = _minPixelSize;
             while (size < _maxPixelSize)
             {
                 size += _transitionStep;
-                Debug.Log(size);
+                // Debug.Log(size);
                 transitionMaterial.SetFloat(_pixelSize, size);
                 yield return null;
             }
             
             SceneManager.LoadScene(sceneName);
             yield return null;
-
+            
             while (size > _minPixelSize)
             {
                 size -= _transitionStep;
-                Debug.Log(size);
+                // Debug.Log(size);
                 transitionMaterial.SetFloat(_pixelSize, size);
                 yield return null;
             }
             
             _transitionStarted = false;
             Destroy(gameObject);
+        }
+        
+        public IEnumerator AudioFade(float duration, float targetVolume)
+        {
+            var currentTime = 0.0f;
+            var start = _audioSource.volume;
+            while (currentTime < duration)
+            {
+                currentTime += Time.deltaTime;
+                _audioSource.volume = Mathf.Lerp(start, targetVolume, currentTime / duration);
+                yield return null;
+            }
         }
     }
 }
