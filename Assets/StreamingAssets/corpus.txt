@@ -685,7 +685,6 @@ shuck
 shunt
 siege
 sight
-sigil
 silly
 singe
 siren

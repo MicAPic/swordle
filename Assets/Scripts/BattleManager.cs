@@ -19,7 +19,7 @@ public class BattleManager : MonoBehaviour
     public Effect victorySfx;
     public Effect playerSfx;
     public Effect enemyVfx;
-    
+
     [Header("Wordle")]
     [SerializeField]
     private string answer;
@@ -30,7 +30,7 @@ public class BattleManager : MonoBehaviour
     public int _currentGuessIndex = 0;
     private readonly WordDictionary _enDictionary = new WordDictionary();
     private readonly Lemmatizer _lemmatizer = 
-        new Lemmatizer(File.OpenRead("Assets/Plugins/full7z-multext-en.lem"));
+        new Lemmatizer(File.OpenRead(Path.Combine(Application.streamingAssetsPath, "full7z-multext-en.lem")));
 
     [Header("UI")] 
     [SerializeField] 
@@ -49,7 +49,7 @@ public class BattleManager : MonoBehaviour
     void Awake()
     {
         // generate answer
-        var words = File.ReadAllLines("Assets/corpus.txt");
+        var words = File.ReadAllLines(Path.Combine(Application.streamingAssetsPath, "corpus.txt"));
         answer = words[Random.Range(0, words.Length)];
     }
     
@@ -61,7 +61,7 @@ public class BattleManager : MonoBehaviour
         Destroy(inputField.transform.Find("Text Area/Caret").gameObject);
         
         // initialize en-US dictionary
-        _enDictionary.DictionaryFile = "Assets/Plugins/en-US.dic"; 
+        _enDictionary.DictionaryFile = Path.Combine(Application.streamingAssetsPath, "en-US.dic"); 
         _enDictionary.Initialize();
         
         // initialize the life bar
