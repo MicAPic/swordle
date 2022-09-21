@@ -908,7 +908,6 @@ weird
 whack
 whale
 wheel
-whelp
 while
 white
 whole

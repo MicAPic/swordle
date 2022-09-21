@@ -17,6 +17,8 @@ public class BattleManager : MonoBehaviour
     
     [Header("SFX/VFX")]
     public Effect victorySfx;
+    public Effect playerSfx;
+    public Effect enemyVfx;
     
     [Header("Wordle")]
     [SerializeField]

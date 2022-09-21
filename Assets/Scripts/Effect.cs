@@ -14,7 +14,7 @@ public class Effect : MonoBehaviour
     [SerializeField] 
     private string sceneToLoad;
 
-    void Start()
+    void Awake()
     {
         StartCoroutine(WaitBeforeCoroutine());
     }
@@ -28,10 +28,10 @@ public class Effect : MonoBehaviour
     IEnumerator DestructionCoroutine()
     {
         yield return new WaitForSeconds(time);
-        Destroy(gameObject);
         if (loadScene)
         {
             FindObjectOfType<TransitionController>().LoadScene(sceneToLoad);
         }
+        Destroy(gameObject);
     }
 }

@@ -21,6 +21,16 @@ public class AnimationController : MonoBehaviour
     {
         transitionController.LoadScene(sceneName);
     }
+    
+    public void TriggerWarriorVfx()
+    {
+        Instantiate(battleManager.playerSfx);
+    }
+
+    public void TriggerEnemyVfx()
+    {
+        Instantiate(battleManager.enemyVfx);
+    }
 
     public void TriggerVictorySfx()
     {

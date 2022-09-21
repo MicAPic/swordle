@@ -1029,6 +1029,8 @@ MonoBehaviour:
   playerAnimator: {fileID: 625957995}
   enemyAnimator: {fileID: 1953786470}
   victorySfx: {fileID: 7029785192855684400, guid: e53f90f5b6cfc4c6390409305ccb423c, type: 3}
+  playerSfx: {fileID: -4319009063546410581, guid: 503cb08690b824b72809a5d175c51abd, type: 3}
+  enemyVfx: {fileID: -4319009063546410581, guid: bdce4020d234d48f09098752a76c88d9, type: 3}
   answer: 
   guesses: []
   _currentGuessIndex: 0
@@ -2246,7 +2248,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1392880730
 RectTransform:
   m_ObjectHideFlags: 0
